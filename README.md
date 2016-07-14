@@ -16,9 +16,9 @@ unzip BitBar-v1.9.1.zip && mv BitBar.app ~/Applications && open BitBar.app
 - Click on the BitBar icon
 - Set your favourite directory as Plugin Folder
 - Clone this repos into your plugin folder
-- Move the script outside
+- Copy the script outside
 ```bash 
-mv github_assigned_pr_counter.10s.rb ..
+cp github_assigned_pr_counter.10s.rb ..
 ```
 
 ## Configuration
