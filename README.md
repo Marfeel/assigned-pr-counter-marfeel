@@ -49,4 +49,8 @@ At the moment we are using the GitHub API, but will be changed on the Jira ones,
 
 If something dosen't work, or you wanna make new changes or you just wanna talk about which is the better place to catch some Pokemon don't be afraid of open an issue or send a pull request.
 
+## Bonus
+
+Yes, if you were asking yourself, the name is actually the parody version of the [Counting Crows](https://www.youtube.com/watch?v=-oqAU5VxFWs)
+
 :shipit:
