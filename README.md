@@ -16,7 +16,10 @@ unzip BitBar-v1.9.1.zip && mv BitBar.app ~/Applications && open BitBar.app
 - Click on the BitBar icon
 - Set your favourite directory as Plugin Folder
 - Clone this repos into your plugin folder
-
+- Copy the script outside
+```bash 
+cp github_assigned_pr_counter.10s.rb ..
+```
 
 ## Configuration
 
@@ -24,7 +27,11 @@ In order to make it work you have to edit this file with your own configs
 
 - Generate new token [here](https://github.com/settings/tokens) (you must check [repo] to access to private repos)
 - Set `ACCESS_TOKEN`,  `REPO` and `GITHUB_USERNAME`
- 
+
+## Reminders & Security
+
+If you want to work on this remember to **DONT** commit your API Token. **EVER**
+
 ## API
 
 At the moment we are using the GitHub API, but will be changed on the Jira ones, in order to follow better the flow we use at [Marfeel](www.marfeel.com)
