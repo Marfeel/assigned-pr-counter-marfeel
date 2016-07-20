@@ -38,12 +38,12 @@ At the moment we are using the GitHub API, but will be changed on the Jira ones,
 
 ## Future improvements & Known Issues
 
-- Refactor this on `Javascript` instead of `Ruby``
-- Change the API form Github to Jira
-- ~~Support multiple repos~~
-- Growl Notification
-- Reminder (after some times with a pending PR, new notification)
-- Vacation Mode  
+- [ ] Refactor this on `Javascript` instead of `Ruby``
+- [ ] Change the API form Github to Jira
+- [x] ~~Support multiple repos~~
+- [ ] Growl Notification
+- [ ] Reminder (after some times with a pending PR, new notification)
+- [ ] Vacation Mode  
 
 ## Open Source Spirits
 
