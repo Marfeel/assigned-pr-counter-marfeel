@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 # coding: utf-8
-
 # <bitbar.title>GitHub Assigned PR Counter</bitbar.title>
 # <bitbar.version>v1.0.0</bitbar.version>
 # <bitbar.author>akira-hamada</bitbar.author>
@@ -17,14 +16,14 @@ ACCESS_TOKEN = '' # Generate new token here https://github.com/settings/tokens (
 OWNER = 'Marfeel'
 REPOS = ['MarfeelXP','AliceTenants','Gutenberg']
 GITHUB_USERNAME = 'YOUR_USERNAME'
-COLOR_CLEAN_PR='gray'
-COLOR_PR='black'
+COLOR_CLEAN_PR='green'
+COLOR_PR='red'
 
 def setColorTheme()
   if ENV["BitBarDarkMode"]
-    'white'
+    return 'white'
   end
-  'black'
+  return 'black'
 end
 
 def getIssues(repo)
@@ -52,7 +51,7 @@ issuesDividedByRepos.each.with_index { |issues, i|
   end
 
   puts "#{REPOS[i]} | color=#{color}"
-  
+
   puts '---'
 
   asigned_pulls.each do |pr|
