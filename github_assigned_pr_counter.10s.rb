@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 # coding: utf-8
-
 # <bitbar.title>GitHub Assigned PR Counter</bitbar.title>
 # <bitbar.version>v1.0.0</bitbar.version>
 # <bitbar.author>akira-hamada</bitbar.author>
@@ -17,6 +16,15 @@ ACCESS_TOKEN = '' # Generate new token here https://github.com/settings/tokens (
 OWNER = 'Marfeel'
 REPOS = ['MarfeelXP','AliceTenants','Gutenberg']
 GITHUB_USERNAME = 'YOUR_USERNAME'
+COLOR_CLEAN_PR='green'
+COLOR_PR='red'
+
+def setColorTheme()
+  if ENV["BitBarDarkMode"]
+    return 'white'
+  end
+  return 'black'
+end
 
 def getIssues(repo)
   url = "https://api.github.com/repos/#{OWNER}/#{repo}/issues?access_token=#{ACCESS_TOKEN}"
@@ -31,19 +39,23 @@ issuesDividedByRepos.each.with_index { |issues, i|
   asigned_pulls = issues.select do |issue|
     !issue['pull_request'].nil? && !issue['assignee'].nil? && issue['assignee']['login'] == GITHUB_USERNAME
   end
+
   count = asigned_pulls.count
-  color = count > 0 ? 'black' : 'gray'
+  color = setColorTheme()
+  prNumberColor = count >= 1 ? COLOR_PR : COLOR_CLEAN_PR
+
   if count == 0
-    puts ":palm_tree: #{count} | color=#{color}"
+    puts ":palm_tree: #{count} | color=#{prNumberColor}"
   else
-    puts ":eyeglasses: #{count} | color=#{color}"
+    puts ":eyeglasses: #{count} | color=#{prNumberColor}"
   end
-  puts "#{REPOS[i]}"
+
+  puts "#{REPOS[i]} | color=#{color}"
 
   puts '---'
 
   asigned_pulls.each do |pr|
-    puts "#{pr['title']} | color=black href=#{pr['html_url']}"
+    puts "#{pr['title']} | color=#{color} href=#{pr['html_url']}"
   end
   puts '---'
 }
