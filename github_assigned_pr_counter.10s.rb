@@ -14,27 +14,36 @@ require 'uri'
 require 'json'
 
 ACCESS_TOKEN = '' # Generate new token here https://github.com/settings/tokens (you must check [repo] to access to private repos)
-REPO = 'Marfeel/YOUR_REPO'
+OWNER = 'Marfeel'
+REPOS = ['MarfeelXP','AliceTenants','Gutenberg']
 GITHUB_USERNAME = 'YOUR_USERNAME'
 
-url = "https://api.github.com/repos/#{REPO}/issues?access_token=#{ACCESS_TOKEN}"
-issues =  JSON.parse(Net::HTTP.get(URI.parse(url)))
+def getIssues(repo)
+  url = "https://api.github.com/repos/#{OWNER}/#{repo}/issues?access_token=#{ACCESS_TOKEN}"
+  issues = JSON.parse(Net::HTTP.get(URI.parse(url)))
+  return issues
+end
+
+issuesDividedByRepos = REPOS.map{ |repo| getIssues(repo) }
 
 # Response detail is here https://developer.github.com/v3/pulls/#response
-asigned_pulls = issues.select do |issue|
-  !issue['pull_request'].nil? && !issue['assignee'].nil? && issue['assignee']['login'] == GITHUB_USERNAME
-end
+issuesDividedByRepos.each.with_index { |issues, i|
+  asigned_pulls = issues.select do |issue|
+    !issue['pull_request'].nil? && !issue['assignee'].nil? && issue['assignee']['login'] == GITHUB_USERNAME
+  end
+  count = asigned_pulls.count
+  color = count > 0 ? 'black' : 'gray'
+  if count == 0
+    puts ":palm_tree: #{count} | color=#{color}"
+  else
+    puts ":eyeglasses: #{count} | color=#{color}"
+  end
+  puts "#{REPOS[i]}"
 
-count = asigned_pulls.count
-color = count > 0 ? 'black' : 'gray'
-if count == 0
-  puts ":palm_tree: #{count} | color=#{color}"
-else
-  puts ":eyeglasses: #{count} | color=#{color}"
-end
+  puts '---'
 
-puts '---'
-
-asigned_pulls.each do |pr|
-  puts "#{pr['title']} | color=black href=#{pr['html_url']}"
-end
+  asigned_pulls.each do |pr|
+    puts "#{pr['title']} | color=black href=#{pr['html_url']}"
+  end
+  puts '---'
+}
