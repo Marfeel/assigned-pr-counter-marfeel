@@ -40,7 +40,7 @@ At the moment we are using the GitHub API, but will be changed on the Jira ones,
 
 - Refactor this on `Javascript` instead of `Ruby``
 - Change the API form Github to Jira
-- Support multiple repos
+- ~~Support multiple repos~~
 - Growl Notification
 - Reminder (after some times with a pending PR, new notification)
 - Vacation Mode  
