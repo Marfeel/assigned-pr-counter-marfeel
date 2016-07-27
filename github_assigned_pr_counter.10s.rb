@@ -26,35 +26,42 @@ def setColorTheme()
   return 'black'
 end
 
-def getIssues(repo)
+def getIssuesByUser(repo)
   url = "https://api.github.com/repos/#{OWNER}/#{repo}/issues?access_token=#{ACCESS_TOKEN}"
   issues = JSON.parse(Net::HTTP.get(URI.parse(url)))
+  issues = issues.select do |issue|
+    !issue['pull_request'].nil? && !issue['assignee'].nil? && issue['assignee']['login'] == GITHUB_USERNAME
+  end
   return issues
 end
 
-issuesDividedByRepos = REPOS.map{ |repo| getIssues(repo) }
+def renderCounter(count)
+  totalPRNumberColor = count >= 1 ? COLOR_PR : COLOR_CLEAN_PR
+  if count == 0
+      puts ":palm_tree: #{count} | color=#{totalPRNumberColor}"
+  else
+      puts ":eyeglasses: #{count} | color=#{totalPRNumberColor}"
+  end
+  puts '---'
+end
+
+issuesDividedByRepos = REPOS.map{ |repo| getIssuesByUser(repo) }
 
 # Response detail is here https://developer.github.com/v3/pulls/#response
+totalPR = 0
 issuesDividedByRepos.each.with_index { |issues, i|
-  asigned_pulls = issues.select do |issue|
-    !issue['pull_request'].nil? && !issue['assignee'].nil? && issue['assignee']['login'] == GITHUB_USERNAME
-  end
+  totalPR = totalPR + issues.length
+}
+renderCounter(totalPR)
 
-  count = asigned_pulls.count
+
+issuesDividedByRepos.each.with_index { |issues, i|
+  count = issues.count
   color = setColorTheme()
-  prNumberColor = count >= 1 ? COLOR_PR : COLOR_CLEAN_PR
-
-  if count == 0
-    puts ":palm_tree: #{count} | color=#{prNumberColor}"
-  else
-    puts ":eyeglasses: #{count} | color=#{prNumberColor}"
-  end
-
   puts "#{REPOS[i]} | color=#{color}"
+  renderCounter(count)
 
-  puts '---'
-
-  asigned_pulls.each do |pr|
+  issues.each do |pr|
     puts "#{pr['title']} | color=#{color} href=#{pr['html_url']}"
   end
   puts '---'
