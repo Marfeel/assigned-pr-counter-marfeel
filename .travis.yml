@@ -8,7 +8,5 @@ node_js:
   - "6"
   - "5"
   - "4"
-env:
-  - NO_WATCH_TESTS=1
 install:
   - npm install
