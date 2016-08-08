@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\"",
-    "lint": "eslint counting_prawns.10s.js; exit 0"
+    "lint": "eslint counting_prawns.10s.js; exit 0",
+    "build": "npm test && npm run lint"
   },
   "repository": {
     "type": "git",
