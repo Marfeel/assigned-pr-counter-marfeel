@@ -4,11 +4,12 @@
   "description": "## Description It's very hard to keep truck on everything, and of course memory is something that need to be trained, but if you other 100 things to do sometimes you just forget, thats why the cool thing about programming is that you can let the computer remember (or at least help you) things for you. With this easy script we can truck our assigned pull request in order to don't block the work of others and to make our work smoother.",
   "main": "index.js",
   "dependencies": {
-    "bitbar": "^0.3.0"
+    "bitbar": "^0.3.0",
+    "eslint": "^3.2.2"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+    "test": "echo \"Error: no test specified\"",
+    "lint": "eslint counting_prawns.10s.js; exit 0"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/stefanosaittamrf/assigned-pr-counter-marfeel/issues"
   },
-  "homepage": "https://github.com/stefanosaittamrf/assigned-pr-counter-marfeel#readme"
+  "homepage": "https://github.com/stefanosaittamrf/assigned-pr-counter-marfeel#readme",
+  "devDependencies": {
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb": "^10.0.0",
+    "eslint-plugin-react": "^6.0.0"
+  }
 }
