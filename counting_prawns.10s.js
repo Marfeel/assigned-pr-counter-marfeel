@@ -16,14 +16,14 @@ const bitbar = require('bitbar');
 // Configurable params
 const githubConfig = {
   accessToken: '',
-  username: 'stefanosaittamrf',
+  username: 'YOUR_USERNAME',
   owner: 'Marfeel',
   repos: ['MarfeelXP', 'AliceTenants', 'Gutenberg'],
   color: 'green',
   alertColor: 'red',
 };
 
-const createMutipleOptions = (config) => {
+const getMutipleOptions = (config) => {
   const {
     accessToken,
     owner,
@@ -41,30 +41,53 @@ const createMutipleOptions = (config) => {
   }));
 };
 
-const getPr = (options) => {
-  const req = https.request(options, (res) => {
-    res.on('data', (d) => {
-      /* TODO: this is just a print of data, need to be parsed */
-      process.stdout.write(d);
+const getPRs = (options) => (
+  new Promise((resolve, reject) => {
+    const req = https.request(options, (res) => {
+      let body = '';
+      res.on('data', (chunk) => {
+        body += chunk;
+      });
+      res.on('end', () => {
+        resolve(JSON.parse(body));
+      });
     });
-  });
-  req.end();
+
+    req.on('error', (e) => {
+      reject(e);
+    });
+
+    req.end();
+  })
+);
+
+const getPrDividedByRepos = () => {
+  const multipleOptions = getMutipleOptions(githubConfig);
+  /* TODO: before to call the API add a name of repo than concat */
+  const prDividedByRepos = multipleOptions.map(options => getPRs(options));
+  return Promise.all(prDividedByRepos);
 };
 
-const getPrDividedByReposAndAssignedToYou = () => {
-  const prDividedByRepos = getPr(createMutipleOptions(githubConfig));
-  /* TODO: i need to attach the name of the repo to this Array */
-  return prDividedByRepos.map(repo =>
-    getPr(repo).filter(pr => {
-      const {
-        login,
-      } = pr.assignee;
-      const {
-        username,
-      } = githubConfig;
-      return login === username;
-    }));
+const filterPrsByLoginNames = pr => {
+  const {
+    assignees,
+  } = pr;
+
+  const {
+    username,
+  } = githubConfig;
+
+  const loginNames = assignees.map(assignee => assignee.login);
+  return loginNames.includes(username);
 };
+
+const getPrDividedByReposAndAssignedToYou = () => (
+  getPrDividedByRepos().then(prDividedByRepos =>
+    prDividedByRepos.map(prs =>
+      prs.filter(pr => filterPrsByLoginNames(pr))
+    )
+  )
+);
 
 const getTotalPrAssignedToYou = (prDividedByReposAssignedToYou) => (
   prDividedByReposAssignedToYou.reduce((acc, prDividedByRepos) => (
@@ -84,35 +107,48 @@ const getFormattedPrByRepo = (repo, darkMode, sep) => (
       color: getColor(darkMode),
       href: pr.html_url,
     }
-  ))
+  )).concat(sep)
 );
 
-const bitbarObjectBuilder = (prAssignedToYouDividedByRepos, ...bitbarConfigVars) => {
+const getStyledTitle = numberOfPr => `${getEmoji(numberOfPr)} ${numberOfPr}`;
+
+/* TODO: This needs a better implementation. Needs refacor */
+const getRepoName = prs => prs[0].base.repo.name;
+
+/* TODO: This method should have been called as soon as i get the data, not here. Needs refacor */
+const getCleanPrAssignedToYouDividedByRepos = prAssignedToYouDividedByRepos => (
+  prAssignedToYouDividedByRepos.filter(prAssignedToYou => prAssignedToYou.length)
+);
+
+const bitbarObjectBuilder = (prAssignedToYouDividedByRepos, bitbarConfigVars) => {
   const totalPrAssignedToYou = getTotalPrAssignedToYou(prAssignedToYouDividedByRepos);
+  const cleanPrAssignedToYouDividedByRepos = getCleanPrAssignedToYouDividedByRepos(prAssignedToYouDividedByRepos);
   const {
     darkMode,
     sep,
   } = bitbarConfigVars;
 
   const heading = {
-    text: `${getEmoji(totalPrAssignedToYou)} ${totalPrAssignedToYou}`,
+    text: getStyledTitle(totalPrAssignedToYou),
     color: getColor(darkMode),
     dropdown: false,
   };
 
-  const formattedPr = prAssignedToYouDividedByRepos.map(repo => (
+  const formattedPr = cleanPrAssignedToYouDividedByRepos.map(prs => (
     {
-      text: repo.name,
+      text: `${getRepoName(prs)} ${getStyledTitle(prs.length)}`,
       color: getColor(darkMode),
-      submenu: getFormattedPrByRepo(repo, darkMode, sep),
+      submenu: getFormattedPrByRepo(prs, darkMode, sep),
     }
   ));
 
-  return Array.of(heading).concat(formattedPr);
+  return Array.of(heading, sep).concat(formattedPr);
 };
 
 const paintBitBar = () => {
-  bitbar(bitbarObjectBuilder(getPrDividedByReposAndAssignedToYou(), bitbar));
+  getPrDividedByReposAndAssignedToYou().then((prAssignedToYou) => {
+    bitbar(bitbarObjectBuilder(prAssignedToYou, bitbar));
+  });
 };
 
 paintBitBar();
