@@ -4,8 +4,7 @@
   "description": "## Description It's very hard to keep truck on everything, and of course memory is something that need to be trained, but if you other 100 things to do sometimes you just forget, thats why the cool thing about programming is that you can let the computer remember (or at least help you) things for you. With this easy script we can truck our assigned pull request in order to don't block the work of others and to make our work smoother.",
   "main": "index.js",
   "dependencies": {
-    "bitbar": "^0.3.0",
-    "eslint": "^3.2.2"
+    "bitbar": "^0.3.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\"",
@@ -25,6 +24,8 @@
   "devDependencies": {
     "eslint": "^3.2.2",
     "eslint-config-airbnb": "^10.0.0",
+    "eslint-plugin-import": "^1.12.0",
+    "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-react": "^6.0.0"
   }
 }
