@@ -38,7 +38,7 @@ At the moment we are using the GitHub API, but will be changed on the Jira ones,
 
 ## Future improvements & Known Issues
 
-- [ ] Refactor this on `Javascript` instead of `Ruby``
+- [x] ~~Refactor this on `Javascript` instead of `Ruby`~~
 - [x] ~~Support multiple repos~~
 - [x] ~~Support for DarkThemes~~
 - [ ] Support Both the API form Github or Jira by configuration
