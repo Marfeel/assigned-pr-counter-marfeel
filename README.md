@@ -16,10 +16,16 @@ unzip BitBar-v1.9.1.zip && mv BitBar.app ~/Applications && open BitBar.app
 - Click on the BitBar icon
 - Set your favourite directory as Plugin Folder
 - Clone this repos into your plugin folder
-- Copy the script outside
+- Copy the script and the package.json on your Plugin Folder
 ```bash 
-cp github_assigned_pr_counter.10s.rb ..
+cp counting_prawns.10s.js <your_plugin_folder>
+cp package.json <your_plugin_folder>
 ```
+- Install all the dependencies of the script:
+```bash
+npm install
+```
+- Delete package.json from the Plugin Folder (to avoid BitBar to try to execute it)
 
 ## Configuration
 
