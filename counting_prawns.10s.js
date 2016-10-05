@@ -18,7 +18,7 @@ const githubConfig = {
   accessToken: '',
   username: 'YOUR_USERNAME',
   owner: 'Marfeel',
-  repos: ['MarfeelXP', 'AliceTenants', 'Gutenberg'],
+  repos: ['MarfeelXP', 'AliceTenants', 'Gutenberg', 'ProTenants'],
   color: 'green',
   alertColor: 'red',
 };
