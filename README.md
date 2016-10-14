@@ -19,7 +19,6 @@ mkdir MyPlugin
 ```
 - Click on the BitBar icon
 - Set as your favourite Plugin Folder
-[![https://gyazo.com/6385a430bae3e36a4747e05e645c773d](https://i.gyazo.com/6385a430bae3e36a4747e05e645c773d.gif)](https://gyazo.com/6385a430bae3e36a4747e05e645c773d)
 - Clone this repos into whatever place you like
 - Install dependecies
 ```bash
@@ -30,6 +29,8 @@ npm i
 ```bash
 ln - s /Users/$USER/DIRECTORY_YOU_CLONE/assigned-pr-counter-marfeel/counting_prawns.10s.js counting_paraws.10s.js
 ```
+
+[![https://gyazo.com/6385a430bae3e36a4747e05e645c773d](https://i.gyazo.com/6385a430bae3e36a4747e05e645c773d.gif)](https://gyazo.com/6385a430bae3e36a4747e05e645c773d)
 ## Configuration
 
 In order to make it work you have to edit this file with your own configs
