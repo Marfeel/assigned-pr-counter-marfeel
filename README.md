@@ -13,14 +13,23 @@ unzip BitBar-v1.9.1.zip && mv BitBar.app ~/Applications && open BitBar.app
 ```
 
 ## Installation
-- Click on the BitBar icon
-- Set your favourite directory as Plugin Folder
-- Clone this repos into your plugin folder
-- Copy the script outside
-```bash 
-cp github_assigned_pr_counter.10s.rb ..
+- Create a `MyPlugin` directory
+```bash
+mkdir MyPlugin
 ```
-
+- Click on the BitBar icon
+- Set as your favourite Plugin Folder
+[![https://gyazo.com/6385a430bae3e36a4747e05e645c773d](https://i.gyazo.com/6385a430bae3e36a4747e05e645c773d.gif)](https://gyazo.com/6385a430bae3e36a4747e05e645c773d)
+- Clone this repos into whatever place you like
+- Install dependecies
+```bash
+npm i
+```
+- Configure the plugin for yourself (Look Configuration :arrow_down: )
+- Create a soft link to the configured plugin
+```bash
+ln - s /Users/$USER/DIRECTORY_YOU_CLONE/assigned-pr-counter-marfeel/counting_prawns.10s.js counting_paraws.10s.js
+```
 ## Configuration
 
 In order to make it work you have to edit this file with your own configs
