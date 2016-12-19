@@ -12,16 +12,7 @@
 
 const https = require('https');
 const bitbar = require('bitbar');
-
-// Configurable params
-const githubConfig = {
-  accessToken: '',
-  username: 'YOUR_USERNAME',
-  owner: 'Marfeel',
-  repos: ['MarfeelXP', 'AliceTenants', 'Gutenberg', 'ProTenants'],
-  color: 'green',
-  alertColor: 'red',
-};
+const githubConfig = require('./config.json');
 
 const getMutipleOptions = (config) => {
   const {
