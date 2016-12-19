@@ -1,2 +1,4 @@
 Plugin/
 node_modules/
+.history/*
+.vscode/*
