@@ -1,5 +1,5 @@
 Plugin/
 node_modules/
 .history/*
-config.json
 .vscode/*
+config.json
