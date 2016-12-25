@@ -15,8 +15,8 @@ const bitbar = require('bitbar');
 
 // Configurable params
 const githubConfig = {
-  accessToken: 'ACCESS_TOKEN',
-  username: 'USERNAME',
+  accessToken: '',
+  username: 'YOUR_USERNAME',
   owner: 'Marfeel',
   repos: ['MarfeelXP', 'AliceTenants', 'Gutenberg', 'ProTenants'],
   color: 'green',
