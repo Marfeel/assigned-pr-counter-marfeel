@@ -33,10 +33,21 @@ ln - s /Users/$USER/DIRECTORY_YOU_CLONE/assigned-pr-counter-marfeel/counting_pra
 [![https://gyazo.com/6385a430bae3e36a4747e05e645c773d](https://i.gyazo.com/6385a430bae3e36a4747e05e645c773d.gif)](https://gyazo.com/6385a430bae3e36a4747e05e645c773d)
 ## Configuration
 
-In order to make it work you have to edit this file with your own configs
+In order to make it work you have to create a file called config.json inside the project, at the same level as the file counting_prawns.10s.js and fill the following JSON object:
+
+```JSON
+{
+  "accessToken": "ACCESS_TOKEN",
+  "username": "GITHUB_USERNAME",
+  "owner": "REPO",
+  "repos": ["MarfeelXP", "AliceTenants", "Gutenberg", "ProTenants"],
+  "color": "green",
+  "alertColor": "red"
+}
+```
 
 - Generate new token [here](https://github.com/settings/tokens) (you must check [repo] to access to private repos)
-- Set `ACCESS_TOKEN`,  `REPO` and `GITHUB_USERNAME`
+- Set `ACCESS_TOKEN`, `REPO` and `GITHUB_USERNAME`
 
 ## Reminders & Security
 
