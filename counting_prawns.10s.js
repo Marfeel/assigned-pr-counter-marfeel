@@ -49,7 +49,9 @@ const getPRs = (options) => (
         body += chunk;
       });
       res.on('end', () => {
-        resolve(JSON.parse(body));
+        const response = JSON.parse(body);
+        if (response.message) reject(response.message);
+        else resolve(response);
       });
     });
 
@@ -97,6 +99,8 @@ const getTotalPrAssignedToYou = (prDividedByReposAssignedToYou) => (
 
 const getEmoji = num => (num > 0 ? ':eyeglasses:' : ':palm_tree:');
 
+const getErrorEmoji = () => ':x:';
+
 const getColor = darkMode => (darkMode ? 'white' : 'black');
 
 const getFormattedPrByRepo = (repo, darkMode, sep) => (
@@ -120,6 +124,20 @@ const getCleanPrAssignedToYouDividedByRepos = prAssignedToYouDividedByRepos => (
   prAssignedToYouDividedByRepos.filter(prAssignedToYou => prAssignedToYou.length)
 );
 
+const bitbarBuildHeading = (text, bitbarConfigVars) => {
+  const {
+    darkMode,
+    sep,
+  } = bitbarConfigVars;
+
+  const heading = {
+    text,
+    color: getColor(darkMode),
+    dropdown: false,
+  };
+  return Array.of(heading, sep);
+};
+
 const bitbarObjectBuilder = (prAssignedToYouDividedByRepos, bitbarConfigVars) => {
   const totalPrAssignedToYou = getTotalPrAssignedToYou(prAssignedToYouDividedByRepos);
   const cleanPrAssignedToYouDividedByRepos = getCleanPrAssignedToYouDividedByRepos(prAssignedToYouDividedByRepos);
@@ -127,12 +145,6 @@ const bitbarObjectBuilder = (prAssignedToYouDividedByRepos, bitbarConfigVars) =>
     darkMode,
     sep,
   } = bitbarConfigVars;
-
-  const heading = {
-    text: getStyledTitle(totalPrAssignedToYou),
-    color: getColor(darkMode),
-    dropdown: false,
-  };
 
   const formattedPr = cleanPrAssignedToYouDividedByRepos.map(prs => (
     {
@@ -142,12 +154,14 @@ const bitbarObjectBuilder = (prAssignedToYouDividedByRepos, bitbarConfigVars) =>
     }
   ));
 
-  return Array.of(heading, sep).concat(formattedPr);
+  return bitbarBuildHeading(getStyledTitle(totalPrAssignedToYou), bitbarConfigVars).concat(formattedPr);
 };
 
 const paintBitBar = () => {
   getPrDividedByReposAndAssignedToYou().then((prAssignedToYou) => {
     bitbar(bitbarObjectBuilder(prAssignedToYou, bitbar));
+  }).catch((errorMessage) => {
+    bitbar(bitbarBuildHeading(`${getErrorEmoji()} ${errorMessage}`, bitbar));
   });
 };
 
