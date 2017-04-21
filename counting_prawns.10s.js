@@ -15,8 +15,8 @@ const bitbar = require('bitbar');
 
 // Configurable params
 const githubConfig = {
-  accessToken: '',
-  username: 'YOUR_USERNAME',
+  accessToken: 'c4b066076a28fa923be6414db48a559daae42a4b',
+  username: 'dominguezcelada',
   owner: 'Marfeel',
   repos: ['MarfeelXP', 'AliceTenants', 'Gutenberg', 'ProTenants'],
   color: 'green',
@@ -49,7 +49,9 @@ const getPRs = (options) => (
         body += chunk;
       });
       res.on('end', () => {
-        resolve(JSON.parse(body));
+        const response = JSON.parse(body);
+        if(response.message) reject(response.message);
+        else resolve(response);
       });
     });
 
@@ -86,16 +88,18 @@ const getPrDividedByReposAndAssignedToYou = () => (
     prDividedByRepos.map(prs =>
       prs.filter(pr => filterPrsByLoginNames(pr))
     )
-  )
+  ).catch((message) => message)
 );
 
-const getTotalPrAssignedToYou = (prDividedByReposAssignedToYou) => (
-  prDividedByReposAssignedToYou.reduce((acc, prDividedByRepos) => (
-    acc + prDividedByRepos.length
-  ), 0)
-);
+const getTotalPrAssignedToYou = (prDividedByReposAssignedToYou) => {
+  if(prDividedByReposAssignedToYou instanceof Array) {
+    return prDividedByReposAssignedToYou.reduce((acc, prDividedByRepos) => (
+      acc + prDividedByRepos.length
+    ), 0)
+  } else return prDividedByReposAssignedToYou;
+};
 
-const getEmoji = num => (num > 0 ? ':eyeglasses:' : ':palm_tree:');
+const getEmoji = num => (num > 0 ? ':eyeglasses:' : num === 0? ':palm_tree:' : ':x:');
 
 const getColor = darkMode => (darkMode ? 'white' : 'black');
 
@@ -116,9 +120,12 @@ const getStyledTitle = numberOfPr => `${getEmoji(numberOfPr)} ${numberOfPr}`;
 const getRepoName = prs => prs[0].base.repo.name;
 
 /* TODO: This method should have been called as soon as i get the data, not here. Needs refacor */
-const getCleanPrAssignedToYouDividedByRepos = prAssignedToYouDividedByRepos => (
-  prAssignedToYouDividedByRepos.filter(prAssignedToYou => prAssignedToYou.length)
-);
+const getCleanPrAssignedToYouDividedByRepos = prAssignedToYouDividedByRepos => {
+  if(prAssignedToYouDividedByRepos instanceof Array) {
+    prAssignedToYouDividedByRepos.filter(prAssignedToYou => prAssignedToYou.length)
+  }
+  return [];
+};
 
 const bitbarObjectBuilder = (prAssignedToYouDividedByRepos, bitbarConfigVars) => {
   const totalPrAssignedToYou = getTotalPrAssignedToYou(prAssignedToYouDividedByRepos);
@@ -148,6 +155,8 @@ const bitbarObjectBuilder = (prAssignedToYouDividedByRepos, bitbarConfigVars) =>
 const paintBitBar = () => {
   getPrDividedByReposAndAssignedToYou().then((prAssignedToYou) => {
     bitbar(bitbarObjectBuilder(prAssignedToYou, bitbar));
+  }).catch((errorMessage) => {
+    bitbar(bitbarObjectBuilder(errorMessage, bitbar));
   });
 };
 
